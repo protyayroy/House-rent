@@ -73,13 +73,15 @@ function tenant_register()
 	$password = md5($password); // Encrypt password
 
 	$tenantQ = $db->query("SELECT * FROM tenant WHERE email = '$email'");
-	if (mysqli_num_rows($tenantQ) != 1) {
+	if (mysqli_num_rows($tenantQ) < 1) {
 		// echo "true"; die();
-		$imageQ = $db->query("SELECT * FROM tenant WHERE image = ('$photo_path' || '$path')");
-		if (mysqli_num_rows($imageQ) != 1) {
+		$imageQ = $db->query("SELECT * FROM tenant WHERE (image = '$photo_path') || (image = '$path')");
+		if (mysqli_num_rows($imageQ) < 1) {
+			// echo "true"; die();
 
-			$id_imageQ = $db->query("SELECT * FROM tenant WHERE id_photo = ('$photo_path' || '$path')");
-			if (mysqli_num_rows($id_imageQ) != 1) {
+			$id_imageQ = $db->query("SELECT * FROM tenant WHERE (id_photo = '$photo_path') || (id_photo = '$path')");
+			if (mysqli_num_rows($id_imageQ) < 1) {
+		// echo "true"; die();
 
 				$sql = "INSERT INTO tenant(full_name,email,password,phone_no,address,id_type,id_photo,image,tenant_rand_id) VALUES('$full_name','$email','$password','$phone_no','$address','$id_type','$path','$photo_path','$random_id')";
 				if ($db->query($sql) === TRUE) {

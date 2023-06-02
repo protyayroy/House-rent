@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 28, 2022 at 09:12 PM
+-- Generation Time: Dec 22, 2022 at 04:35 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -51,6 +51,13 @@ CREATE TABLE `add_property` (
   `owner_id` int(10) NOT NULL,
   `booked` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `add_property`
+--
+
+INSERT INTO `add_property` (`property_id`, `country`, `province`, `zone`, `district`, `city`, `vdc_municipality`, `ward_no`, `tole`, `contact_no`, `property_type`, `estimated_price`, `total_rooms`, `bedroom`, `living_room`, `kitchen`, `bathroom`, `description`, `latitude`, `longitude`, `owner_id`, `booked`) VALUES
+(129, 'Bangladesh', 'Khulna', 'Jessore', 'Jessore', 'Jessore', 'Municipality', 3, 'Roadside', '01869535334', 'Full House Rent', 2800000, 5, 3, 3, 1, 1, 'Lorem ipsum dolor sit amet, consectetur adipisicing\n', '23.409755', '89.137253', 11, 'No');
 
 -- --------------------------------------------------------
 
@@ -119,6 +126,13 @@ CREATE TABLE `owner` (
   `status` tinyint(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `owner`
+--
+
+INSERT INTO `owner` (`owner_id`, `full_name`, `email`, `password`, `phone_no`, `address`, `id_type`, `id_photo`, `image`, `owner_rand_id`, `status`) VALUES
+(11, 'Protyay Roy', 'r.protyay@yahoo.com', '1bbd886460827015e5d605ed44252251', '01869535334', 'Dhaka,Dhaka', 'Citizenship', 'owner-photo/unnamed.png', 'owner-photo/shipman-northcutt-sgZX15Da8YE-unsplash.jpg', 'abc-341571296', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -130,6 +144,15 @@ CREATE TABLE `property_photo` (
   `p_photo` varchar(500) NOT NULL,
   `property_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `property_photo`
+--
+
+INSERT INTO `property_photo` (`property_photo_id`, `p_photo`, `property_id`) VALUES
+(13, 'product-photo/5_bedrooms_modern_corner_lot_h_1647053535_c9aa7185_progressive.jpg', 129),
+(14, 'product-photo/00651f2801fa02735ea186bb38ec60f4.webp', 129),
+(15, 'product-photo/AzRT8xsWDLcAMoH+ZjqHAOmOUNIXmEcsdcRjfpm7V4tDsOREjDqzzm9FqPV1FozVrd+laLs4qCwjH26434PFUmkC6NmOEAFEkUuBjf5BVDj0FhOlg1IH2jXgsOiZ.webp', 129);
 
 -- --------------------------------------------------------
 
@@ -144,6 +167,14 @@ CREATE TABLE `review` (
   `property_id` int(11) NOT NULL,
   `review_sender_id` int(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `review`
+--
+
+INSERT INTO `review` (`review_id`, `comment`, `rating`, `property_id`, `review_sender_id`) VALUES
+(7, 'This is a very good property', 5, 129, 2),
+(11, 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos et doloribus a magni inventore illo voluptates laudantium mollitia ea est repellat enim deleniti ratione nulla vero labore, sed deserunt. Quasi explicabo voluptatum unde, sapiente numquam repellendus. Exercitationem quod veniam mollitia. Ea consectetur nihil numquam, obcaecati a illo dolorum, dignissimos quas unde natus officiis totam alias, corrupti nostrum qui quae? Dicta expedita ab saepe id, sit commodi in ducimus? Eligend', 3, 129, 2);
 
 -- --------------------------------------------------------
 
@@ -164,6 +195,13 @@ CREATE TABLE `tenant` (
   `tenant_rand_id` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `tenant`
+--
+
+INSERT INTO `tenant` (`tenant_id`, `full_name`, `email`, `password`, `phone_no`, `address`, `id_type`, `id_photo`, `image`, `tenant_rand_id`) VALUES
+(2, 'Nourin Khan', 'demo@gmail.com', '1bbd886460827015e5d605ed44252251', '01869535334', 'Dhaka,Dhaka', 'Driving Licence', 'tenant-photo/a605f0c66ac029dd577605d775a8ba55.jpg', 'tenant-photo/photo-1544005313-94ddf0286df2.jfif', 'def-1575987159');
+
 -- --------------------------------------------------------
 
 --
@@ -175,6 +213,15 @@ CREATE TABLE `tenant_to_admin_message` (
   `tenant_msg_rand_id` varchar(255) NOT NULL,
   `msg` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tenant_to_admin_message`
+--
+
+INSERT INTO `tenant_to_admin_message` (`id`, `tenant_msg_rand_id`, `msg`) VALUES
+(2, '0', 'hii'),
+(3, 'def-1575987159', 'okk'),
+(4, 'def-1575987159', 'no\r\n');
 
 --
 -- Indexes for dumped tables
@@ -245,7 +292,7 @@ ALTER TABLE `tenant_to_admin_message`
 -- AUTO_INCREMENT for table `add_property`
 --
 ALTER TABLE `add_property`
-  MODIFY `property_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
+  MODIFY `property_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT for table `admin`
@@ -257,25 +304,25 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `booking`
 --
 ALTER TABLE `booking`
-  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `message`
 --
 ALTER TABLE `message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `owner`
 --
 ALTER TABLE `owner`
-  MODIFY `owner_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `owner_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `property_photo`
 --
 ALTER TABLE `property_photo`
-  MODIFY `property_photo_id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `property_photo_id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `review`
@@ -287,13 +334,13 @@ ALTER TABLE `review`
 -- AUTO_INCREMENT for table `tenant`
 --
 ALTER TABLE `tenant`
-  MODIFY `tenant_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `tenant_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tenant_to_admin_message`
 --
 ALTER TABLE `tenant_to_admin_message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables

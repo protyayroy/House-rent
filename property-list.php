@@ -51,7 +51,6 @@ include("config/config.php");
       $property_id = $rows['property_id'];
 
   ?>
-
       <div class="col-sm-12 col-md-4">
         <div class="card">
           <?php

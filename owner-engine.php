@@ -78,13 +78,13 @@ function owner_register()
 	// }
 
 	$ownerQ = $db->query("SELECT * FROM owner WHERE email = '$email'");
-	if (mysqli_num_rows($ownerQ) != 1) {
+	if (mysqli_num_rows($ownerQ) < 1) {
 		// echo "true"; die();
-		$imageQ = $db->query("SELECT * FROM owner WHERE image = ('$photo_path' || '$path')");
-		if (mysqli_num_rows($imageQ) != 1) {
+		$imageQ = $db->query("SELECT * FROM owner WHERE (image = '$photo_path') || (image = '$path')");
+		if (mysqli_num_rows($imageQ) < 1) {
 			echo "yes"; die();
-			$id_imageQ = $db->query("SELECT * FROM owner WHERE id_photo = ('$photo_path' || '$path')");
-			if (mysqli_num_rows($id_imageQ) != 1) {
+			$id_imageQ = $db->query("SELECT * FROM owner WHERE (id_photo = '$photo_path') || (id_photo = '$path')");
+			if (mysqli_num_rows($id_imageQ) < 1) {
 
 				$sql = "INSERT INTO owner(full_name,email,password,phone_no,address,id_type,id_photo,image,owner_rand_id,status) VALUES('$full_name','$email','$password','$phone_no','$address','$id_type','$path','$photo_path','$random_id','0')";
 				if ($db->query($sql) === TRUE) {

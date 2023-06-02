@@ -19,6 +19,22 @@ isset($_SESSION["email"]);
       filter: alpha(opacity=50);
       opacity: .8 !important;
     }
+
+    .review_ul {
+      list-style-type: none;
+      border-bottom: 1px solid #d8d8d8;
+    }
+
+    .review_ul .r_body {
+      border: 1px solid #999;
+      background: #d8d8d8;
+      width: 500px;
+      margin-top: 10px;
+      color: green;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
   </style>
 </head>
 
@@ -269,45 +285,48 @@ isset($_SESSION["email"]);
         ?>
           <form method="POST">
             <div class="row">
-              <div class="col-sm-6">
-                <?php
-                $tenentQuery = $db->query("SELECT * FROM tenant WHERE email = '{$_SESSION['email']}'");
-                if ($tenentQuery) {
-                  $tenantRow = mysqli_fetch_assoc($tenentQuery);
-                  $tenantId = $tenantRow['tenant_id'];
-                }
-                // $bookingQuery = $db->query("SELECT * FROM booking WHERE poperty_id = '$property_id' AND tenant_id = '$tenantId'");
+              <?php
+              $tenentQuery = $db->query("SELECT * FROM tenant WHERE email = '{$_SESSION['email']}'");
+              if (mysqli_num_rows($tenentQuery) > 0) {
+                $tenantRow = mysqli_fetch_assoc($tenentQuery);
+                $tenantId = $tenantRow['tenant_id'];
 
-                $booked = $rows['booked'];
+              ?>
+                <div class="col-sm-6">
+                  <?php
 
-                if ($booked == 'No') { ?>
+                  $booked = $rows['booked'];
 
-                  <input type="hidden" name="property_id" value="<?php echo $rows['property_id']; ?>">
-                  <!-- <input type="submit" class="btn btn-lg btn-primary" name="book_property" style="width: 100%" value="Book Property"> -->
+                  if ($booked == 'No') { ?>
 
-                  <a class="btn btn-lg btn-primary" data-toggle="modal" data-target="#menu1" style="width: 100%;">Add Property</a>
+                    <input type="hidden" name="property_id" value="<?php echo $rows['property_id']; ?>">
+                    <!-- <input type="submit" class="btn btn-lg btn-primary" name="book_property" style="width: 100%" value="Book Property"> -->
 
-                  <?php } elseif ($booked == 'Pending') {
+                    <a class="btn btn-lg btn-primary" data-toggle="modal" data-target="#menu1" style="width: 100%;">Add Property</a>
 
-                  $bookingQuery = $db->query("SELECT * FROM booking WHERE (property_id = '$property_id') AND (tenant_id = '$tenantId')");
-                  if (mysqli_num_rows($bookingQuery) > 0) { ?>
-                    <form action="" method="post">
-                      <input type="hidden" name="property_id" value="<?php echo $rows['property_id']; ?>">
-                      <input type="submit" class="btn btn-lg btn-warning" style="width: 49%" value="Pending for booking property" disabled>
-                      <input type="submit" class="btn btn-lg btn-danger" style="width: 49%;margin-left:8px" value="Cancel Booking" name="cancel_booking" onclick="return confirm('Do you really want to Cancel Booking!')">
-                    </form>
+                    <?php } elseif ($booked == 'Pending') {
 
-                  <?php } else { ?>
+                    $bookingQuery = $db->query("SELECT * FROM booking WHERE (property_id = '$property_id') AND (tenant_id = '$tenantId')");
+                    if (mysqli_num_rows($bookingQuery) > 0) { ?>
+                      <form action="" method="post">
+                        <input type="hidden" name="property_id" value="<?php echo $rows['property_id']; ?>">
+                        <input type="submit" class="btn btn-lg btn-warning" style="width: 49%" value="Pending for booking property" disabled>
+                        <input type="submit" class="btn btn-lg btn-danger" style="width: 49%;margin-left:8px" value="Cancel Booking" name="cancel_booking" onclick="return confirm('Do you really want to Cancel Booking!')">
+                      </form>
 
-                    <input type="submit" class="btn btn-lg btn-warning" style="width: 100%" value="Processing for booking property" disabled>
+                    <?php } else { ?>
 
-                  <?php }
-                } elseif ($booked == 'Yes') { ?>
+                      <input type="submit" class="btn btn-lg btn-warning" style="width: 100%" value="Processing for booking property" disabled>
 
-                  <input type="submit" class="btn btn-lg btn-danger" style="width: 100%" value="Poperty Booked" disabled>
+                    <?php }
+                  } elseif ($booked == 'Yes') { ?>
 
-                <?php } ?>
-              </div>
+                    <input type="submit" class="btn btn-lg btn-danger" style="width: 100%" value="Poperty Booked" disabled>
+
+                  <?php } ?>
+
+
+                </div>
 
           </form>
           <form method="POST" action="chat/message.php">
@@ -318,6 +337,13 @@ isset($_SESSION["email"]);
 
             </div>
           </form>
+
+        <?php } else { ?>
+          <div class="col-sm-12">
+            <input type="submit" class="btn btn-lg btn-danger" style="width: 100%" value="You should  login as Tenant" disabled>
+
+          </div>
+        <?php } ?>
       </div>
       <div class="modal fade" id="menu1" role="dialog">
         <div class="modal-dialog" style="width: 80%;">
@@ -440,26 +466,48 @@ isset($_SESSION["email"]);
 
 $sql1 = "SELECT * from review where property_id='$property_id'";
 $query = mysqli_query($db, $sql1);
+
 echo '<div class="container-fluid">';
 echo '<h3>Reviews:</h3>';
+echo '<hr style="border: 1px solid #999">';
 echo '</div>';
 if (mysqli_num_rows($query) > 0) {
   while ($row = mysqli_fetch_assoc($query)) {
+    $tenantQ = $db->query("SELECT * FROM tenant WHERE tenant_id = '{$row['review_sender_id']}'");
+    while ($tenantR = mysqli_fetch_assoc($tenantQ)) {
+      // echo $tenantR['full_name'];
+
+
 ?>
-    <div class="container-fluid">
-      <ul>
-        <li><?php echo $row['comment']; ?> &nbsp;&nbsp;&nbsp;(<span class="glyphicon glyphicon-star-empty" style="size: 50px;"><?php echo $row['rating']; ?></span>)</li>
-      </ul>
-    </div>
+
+      <div class="container-fluid">
+        <ul class="review_ul">
+          <li>
+            <div class="r_header">
+              <img src="<?php echo $tenantR['image'] ?>" alt="<?php echo $tenantR['image'] ?>" style="height: 50px; width: 50px; border-radius: 50%;margin-right:10px">
+              <strong><?php echo $tenantR['full_name']; ?></strong>
+              (<span class="glyphicon glyphicon-star-empty" style="size: 50px;">
+                <?php echo $row['rating']; ?>
+              </span>)
+            </div>
+            <div class="r_body" style="margin-left: 50px">
+              <?php echo $row['comment']; ?>
+            </div>
+          </li>
+        </ul>
+      </div>
 
 
 <?php
+    }
   }
 }
 ?>
 <br><br>
 
-
+<?php
+include("footer.php")
+?>
 
 
 </body>
