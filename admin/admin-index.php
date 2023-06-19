@@ -6,6 +6,7 @@ if (!isset($_SESSION["email"])) {
 
 include("navbar.php");
 
+include("../config/config.php");
 ?>
 
 <head>
@@ -17,13 +18,30 @@ include("navbar.php");
 
   <div class="container-fluid">
     <ul class="nav nav-pills nav-justified">
-      <li class="active" style="background-color: #FFF8DC"><a data-toggle="pill" href="#home">Property Lists</a></li>
-      <li style="background-color: #FAF0E6"><a data-toggle="pill" href="#menu1">Owners Details</a></li>
-      <li style="background-color: #FFFACD"><a data-toggle="pill" href="#menu2">Tenant Details</a></li>
-      <li style="background-color: #FAFACD"><a data-toggle="pill" href="#menu3">Booked Property</a></li>
-      <li style="background-color: #FAFACD"><a data-toggle="pill" href="#menu4">Tenant Message</a></li>
+      <li class="active" style="background-color: #FFF8DC">
+        <a data-toggle="pill" href="#home">Property Lists</a>
+      </li>
+      <li style="background-color: #FAF0E6">
+        <a data-toggle="pill" href="#category_list">Category Lists</a>
+      </li>
+      <li style="background-color: #FAF0E6">
+        <a data-toggle="pill" href="#add_category">Add Category</a>
+      </li>
+      <li style="background-color: #FAF0E6">
+        <a data-toggle="pill" href="#menu1">Owners Details</a>
+      </li>
+      <li style="background-color: #FFFACD">
+        <a data-toggle="pill" href="#menu2">Tenant Details</a>
+      </li>
+      <li style="background-color: #FAFACD">
+        <a data-toggle="pill" href="#menu3">Booked Property</a>
+      </li>
+      <li style="background-color: #FAFACD">
+        <a data-toggle="pill" href="#menu4">Tenant Message</a>
+      </li>
     </ul>
     <div class="tab-content">
+
       <div id="home" class="tab-pane fade in active">
         <center>
           <h3>Property Lists</h3>
@@ -31,7 +49,7 @@ include("navbar.php");
         <div class="container-fluid">
           <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search..." title="Type in a name">
           <div style="overflow-x:auto;">
-            <table id="myTable">
+            <table id="myTable" class="table-bordered">
               <tr class="header">
                 <th>Id.</th>
                 <th>Country</th>
@@ -92,7 +110,7 @@ include("navbar.php");
 
                       if (mysqli_num_rows($query) > 0) {
                         while ($row = mysqli_fetch_assoc($query)) { ?>
-                          <img src="../owner/<?php echo $row['p_photo'] ?>" width="50px">
+                          <img src="../owner/<?php echo $row['p_photo'] ?>" width="50px" style="margin-bottom: 5px;">
                   <?php }
                       }
                     }
@@ -104,6 +122,68 @@ include("navbar.php");
         </div>
       </div>
 
+
+      <div id="category_list" class="tab-pane fade">
+        <center>
+          <h3>Category Lists</h3>
+        </center>
+        <div class="container-fluid">
+          <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search..." title="Type in a name">
+          <div style="overflow-x:auto;">
+            <table id="myTable" class="table-bordered">
+              <tr class="header">
+                <th>Id.</th>
+                <th>Name</th>
+              </tr>
+              <?php
+                  $query = mysqli_query($db , "SELECT * FROM `categories`");
+                  while($r = mysqli_fetch_array($query)){ ?>
+              <tr>
+                <td><?= $r['id']; ?></td>
+                <td><?= $r['title']; ?></td>
+              </tr>
+              <?php } ?>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="add_category" class="tab-pane fade">
+        <center>
+          <h3>Add Category</h3>
+        </center>
+        <div class="container">
+
+
+          <div id="map_canvas"></div>
+          <form method="POST" enctype="multipart/form-data">
+            <div class="row">
+
+              <div class="form-group">
+                <label for="category">Category Name:</label>
+                <input type="text" name="category" id="category" class="form-control">
+              </div>
+              <hr>
+              <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-lg col-lg-12" value="Add Category" name="add_category">
+              </div>
+            </div>
+          </form>
+          <br><br>
+
+        </div>
+      </div>
+
+      <?php
+      if (isset($_POST['add_category'])) {
+
+        $cat_name = $_POST['category'];
+        $query = mysqli_query($db, "INSERT INTO `categories`(`title`) VALUES ('$cat_name')");
+        if ($query) {
+          echo "<script>window.alert('Category add successful!')</script>";
+        }
+      }
+      ?>
 
       <div id="menu1" class="tab-pane fade">
         <center>
@@ -174,7 +254,7 @@ include("navbar.php");
         <div class="container">
           <input type="text" id="myInput3" onkeyup="myFunction3()" placeholder="Search..." title="Type in a name">
 
-          <table id="myTable3">
+          <table id="myTable3" class="table-bordered">
             <tr class="header">
               <th>Id</th>
               <th>Full Name</th>
@@ -236,7 +316,7 @@ include("navbar.php");
         <div class="container">
           <input type="text" id="myInput4" onkeyup="myFunction4()" placeholder="Search..." title="Type in a name">
 
-          <table id="myTable4">
+          <table id="myTable4" class="table-bordered">
             <tr class="header">
               <th>Booked Id</th>
               <th>Booked By</th>

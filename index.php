@@ -51,13 +51,6 @@ include("navbar.php");
     box-shadow: 0 0 0 1px #4dd0e1 !important;
 
   }
-
-  /* .form-control{
-    width: 70%;
-  } */
-  /* .btn{
-    width: 28%;
-  } */
 </style>
 
 <div class="bg"></div><br>

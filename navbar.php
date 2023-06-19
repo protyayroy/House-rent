@@ -28,6 +28,22 @@
         <li class="nav-item">
           <a class="nav-link" href="contact-page.php">Contact Us</a>
         </li>
+        <!-- Single button -->
+        <li class="btn-group" style="margin-top: 8px; margin-left: 10px">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            categories &nbsp; <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <?php 
+              include('config/config.php');
+              $query = mysqli_query($db, "SELECT * FROM `categories`");
+              while( $r = mysqli_fetch_array($query)){
+                // $query2 = mysqli_query($db, "SELECT * FROM `add_property` WHERE 'category_id' = '{$r['id']}'");
+                echo "<li><a href='category_property_list.php?category_id={$r['id']}'>{$r['title']}</a></li>";
+              }
+            ?>
+          </ul>
+        </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <?php
